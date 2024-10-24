@@ -8,8 +8,15 @@
 # Autor: John Sanabria - john.sanabria@correounivalle.edu.co
 # Fecha: 2024-08-22
 #
-INPUT_PNG="image.png"
+#INPUT_PNG="image.png"
+IMAGE_DIR="images"
 TEMP_FILE="image.bin"
-python3 fromPNG2Bin.py ${INPUT_PNG}
-./main ${TEMP_FILE}
-python3 fromBin2PNG.py ${TEMP_FILE}.new
+#python3 fromPNG2Bin.py ${INPUT_PNG}
+#./main ${TEMP_FILE}
+#python3 fromBin2PNG.py ${TEMP_FILE}.new
+for INPUT_JPG in ${IMAGE_DIR}/*.jpg; do
+    echo "Procesando ${INPUT_JPG}..."
+    python3 fromPNG2Bin.py "${INPUT_JPG}"
+    ./main "${TEMP_FILE}"
+    python3 fromBin2PNG.py "${TEMP_FILE}.new"
+done
