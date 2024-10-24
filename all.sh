@@ -15,7 +15,7 @@ TEMP_FILE="image.bin"
 #./main ${TEMP_FILE}
 #python3 fromBin2PNG.py ${TEMP_FILE}.new
 for INPUT_PNG in ${IMAGE_DIR}/*.png; do
-    echo "Procesando ${INPUT_PNG}..."
+   
     BASENAME=$(basename "${INPUT_PNG}" .png)
     TEMP_FILE="${BASENAME}.bin"
     

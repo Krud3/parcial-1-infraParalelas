@@ -4,7 +4,7 @@
 #include <omp.h>  //openmp
 
 // Definir el número de hilos como una variable global
-int NUM_THREADS = 24;  // numero de hilos
+int NUM_THREADS = 48;  // numero de hilos
 // Funciones placeholder para la carga y guardado de imágenes
 void cargarImagen(int *imagen, int width, int height);
 void guardarImagen(int *imagen, int width, int height);
@@ -116,7 +116,7 @@ void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
     };
 
     // Paralelizar el bucle externo (filas)
-    #pragma omp parallel for 
+    #pragma omp parallel for shared(imagen, imagenProcesada, width, height, Gx, Gy)
     for (int y = 1; y < height - 1; y++) {
         for (int x = 1; x < width - 1; x++) {
             int sumX = 0;

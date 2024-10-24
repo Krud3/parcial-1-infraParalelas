@@ -1,4 +1,4 @@
-all: compile exe
+all: compile exe clean
 
 compile:
 	gcc -fopenmp -o main main.c
