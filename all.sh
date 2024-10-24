@@ -9,7 +9,7 @@
 # Fecha: 2024-08-22
 #
 #INPUT_PNG="image.png"
-IMAGE_DIR="images"
+IMAGE_DIR="images-png"
 TEMP_FILE="image.bin"
 #python3 fromPNG2Bin.py ${INPUT_PNG}
 #./main ${TEMP_FILE}
