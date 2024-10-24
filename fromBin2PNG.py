@@ -3,15 +3,14 @@ from PIL import Image
 import sys
 import os
 
-
 if len(sys.argv) == 1:
   print("Dar nombre de archivo")
   sys.exit(1)
 
 INPUT_FILE = sys.argv[1]
-FILENAME = os.path.splitext(INPUT_FILE)[0]
+FILENAME = os.path.splitext(os.path.basename(INPUT_FILE))[0]
 OUTPUT_DIR = "out"
-OUTPUT_FILE = f"{OUTPUT_DIR/FILENAME}.PNG"
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, f"{FILENAME}.png")
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
@@ -25,4 +24,3 @@ imagen = Image.fromarray(array_imagen.astype('uint8'))
 
 # Guardar la imagen en formato PNG
 imagen.save(OUTPUT_FILE)
-

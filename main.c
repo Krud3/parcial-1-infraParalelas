@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>  //openmp
 
+// Definir el número de hilos como una variable global
+int NUM_THREADS = 24;  // numero de hilos
 // Funciones placeholder para la carga y guardado de imágenes
 void cargarImagen(int *imagen, int width, int height);
 void guardarImagen(int *imagen, int width, int height);
@@ -15,16 +18,25 @@ int calcularSumaPixeles(int *imagen, int width, int height);
 char *filename;
 
 int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s <nombre_de_archivo>\n", argv[0]);
+        exit(1);
+    }
+
+    filename = argv[1];
     int width = 1024, height = 1024;
     int *imagen = (int *)malloc(width * height * sizeof(int));
     int *imagenProcesada = (int *)malloc(width * height * sizeof(int));
 
-    if (argc != 2) {
-      fprintf(stderr, "Dar un nombre de archivo de entrada");
-      exit(1);
+    if (imagen == NULL || imagenProcesada == NULL) {
+        perror("Error al asignar memoria para las imágenes");
+        exit(1);
     }
 
-    filename = argv[1];
+    // Configuracion de los hilos
+    omp_set_num_threads(NUM_THREADS);
+    printf("Número de hilos: %d\n", NUM_THREADS);
+
     // Cargar la imagen (no paralelizable)
     cargarImagen(imagen, width, height);
 
@@ -49,12 +61,14 @@ void cargarImagen(int *imagen, int width, int height) {
     FILE *archivo = fopen(filename, "rb");
     if (archivo == NULL) {
         perror("Error al abrir el archivo para cargar la imagen");
-        return;
+        exit(1);
     }
 
     size_t elementosLeidos = fread(imagen, sizeof(int), width * height, archivo);
     if (elementosLeidos != width * height) {
         perror("Error al leer la imagen desde el archivo");
+        fclose(archivo);
+        exit(1);
     }
 
     fclose(archivo);
@@ -64,33 +78,45 @@ void cargarImagen(int *imagen, int width, int height) {
 void guardarImagen(int *imagen, int width, int height) {
     char *output_filename;
 
-    output_filename = (char*)malloc(sizeof(char)*(strlen(filename) + 4));
-    sprintf(output_filename,"%s.new",filename);
+    output_filename = (char*)malloc(sizeof(char)*(strlen(filename) + 5)); // Asegurar espacio para ".new\0"
+    if (output_filename == NULL) {
+        perror("Error al asignar memoria para el nombre del archivo de salida");
+        exit(1);
+    }
+    sprintf(output_filename, "%s.new", filename);
     FILE *archivo = fopen(output_filename, "wb");
     if (archivo == NULL) {
         perror("Error al abrir el archivo para guardar la imagen");
-        return;
+        free(output_filename);
+        exit(1);
     }
 
     size_t elementosEscritos = fwrite(imagen, sizeof(int), width * height, archivo);
     if (elementosEscritos != width * height) {
         perror("Error al escribir la imagen en el archivo");
+        fclose(archivo);
+        free(output_filename);
+        exit(1);
     }
 
     fclose(archivo);
+    free(output_filename);
 }
 
-
-//void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
-//    // Código que aplica un filtro a cada píxel (paralelizable)
-//    for (int i = 0; i < width * height; i++) {
-//        imagenProcesada[i] = imagen[i] / 2;  // Ejemplo de operación de filtro
-//    }
-//}
 void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
-    int Gx[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
-    int Gy[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+    int Gx[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}
+    };
+    int Gy[3][3] = {
+        {-1, -2, -1},
+        {0,  0,  0},
+        {1,  2,  1}
+    };
 
+    // Paralelizar el bucle externo (filas)
+    #pragma omp parallel for 
     for (int y = 1; y < height - 1; y++) {
         for (int x = 1; x < width - 1; x++) {
             int sumX = 0;
@@ -111,12 +137,14 @@ void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
     }
 }
 
-
 int calcularSumaPixeles(int *imagen, int width, int height) {
     int suma = 0;
+
+    // Paralelizar el bucle con reducción
+    #pragma omp parallel for reduction(+:suma) 
     for (int i = 0; i < width * height; i++) {
         suma += imagen[i];
     }
+
     return suma;
 }
-

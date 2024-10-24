@@ -8,7 +8,7 @@ if len(sys.argv) != 2:
   sys.exit(1)
 
 IMAGE_FILE = sys.argv[1]
-FILENAME = os.path.splitext(IMAGE_FILE)[0]
+FILENAME = os.path.splitext(os.path.basename(IMAGE_FILE))[0]
 OUTPUT_FILE = f"{FILENAME}.bin"
 
 # Cargar la imagen y convertirla a escala de grises
