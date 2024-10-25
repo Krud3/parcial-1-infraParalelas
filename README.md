@@ -1,6 +1,8 @@
 # Datos de la máquina
 Procesador: AMD Ryzen 9 5900X 12-Core Proceessor (24 CPUs),~3.7GHz
+
 Memoria RAM: 32768MB
+
 GPU: NVIDIA GeForce RTX 3070
 
 # Datos recopilados
