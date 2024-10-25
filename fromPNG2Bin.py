@@ -13,9 +13,14 @@ OUTPUT_FILE = f"{FILENAME}.bin"
 
 # Cargar la imagen y convertirla a escala de grises
 imagen = Image.open(IMAGE_FILE).convert('L')  # 'L' convierte a escala de grises
+# se agrega el dinamismo en el tamanio tanto para ancho como para largo
+width, height = imagen.size  # Obtener dimensiones dinámicas
 
 # Convertir la imagen a un array de NumPy
 array_imagen = np.array(imagen)
 
-# Guardar el array como un archivo binario
-array_imagen.astype('int32').tofile(OUTPUT_FILE)
+# Guardar ancho y alto como int32 al inicio del archivo binario
+with open(OUTPUT_FILE, 'wb') as f:
+    np.int32(width).tofile(f)
+    np.int32(height).tofile(f)
+    array_imagen.astype('int32').tofile(f)

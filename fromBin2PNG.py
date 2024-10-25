@@ -3,9 +3,9 @@ from PIL import Image
 import sys
 import os
 
-if len(sys.argv) == 1:
-  print("Dar nombre de archivo")
-  sys.exit(1)
+if len(sys.argv) != 2:
+    print("Dar nombre de archivo")
+    sys.exit(1)
 
 INPUT_FILE = sys.argv[1]
 FILENAME = os.path.splitext(os.path.basename(INPUT_FILE))[0]
@@ -15,12 +15,16 @@ OUTPUT_FILE = os.path.join(OUTPUT_DIR, f"{FILENAME}.png")
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-# Leer el archivo binario y convertirlo a un array de NumPy
-width, height = 1024, 1024  # Asegúrate de que estas dimensiones coincidan con las usadas en el programa C
-array_imagen = np.fromfile(INPUT_FILE, dtype='int32').reshape((height, width))
+with open(INPUT_FILE, 'rb') as f:
+    # Leer ancho y alto
+    width = np.fromfile(f, dtype='int32', count=1)[0]
+    height = np.fromfile(f, dtype='int32', count=1)[0]
+    
+    # Leer los datos de los píxeles
+    array_imagen = np.fromfile(f, dtype='int32').reshape((height, width))
 
 # Convertir el array a una imagen en escala de grises
-imagen = Image.fromarray(array_imagen.astype('uint8'))
+imagen = Image.fromarray(array_imagen.astype('uint8'), 'L')
 
 # Guardar la imagen en formato PNG
 imagen.save(OUTPUT_FILE)
