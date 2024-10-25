@@ -23,7 +23,7 @@ GPU: NVIDIA GeForce RTX 3070
 |----------------|----------------|
 |1.17            |1.19            |
 
-# Discución
+# Discusión
 
 Los speedup obtenidos para 24 hilos y 48 hilos, fueron 117% y 119% respectivamente, hubo una mejora significativa, pero al utilizar el doble de hilos la mejora fue del  1.7% entre ellas.
 
