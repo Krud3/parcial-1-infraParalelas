@@ -115,7 +115,9 @@ void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
         {1,  2,  1}
     };
 
-    // Paralelizar el bucle externo (filas)
+    // Paralelizar el bucle externo que recorre las filas de la imagen usando OpenMP.
+    // utilizando shared para definir variables compartidas entre los hilos.
+
     #pragma omp parallel for shared(imagen, imagenProcesada, width, height, Gx, Gy)
     for (int y = 1; y < height - 1; y++) {
         for (int x = 1; x < width - 1; x++) {
@@ -140,7 +142,8 @@ void aplicarFiltro(int *imagen, int *imagenProcesada, int width, int height) {
 int calcularSumaPixeles(int *imagen, int width, int height) {
     int suma = 0;
 
-    // Paralelizar el bucle con reducción
+    // Paralelizar el bucle con reducción, esto porque si no se utiliza la reducción
+    // podría causar conflictos en la suma.
     #pragma omp parallel for reduction(+:suma) 
     for (int i = 0; i < width * height; i++) {
         suma += imagen[i];
