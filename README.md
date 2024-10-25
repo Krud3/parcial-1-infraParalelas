@@ -18,4 +18,5 @@ GPU: NVIDIA GeForce RTX 3070
 # Speedup
 
 |Speedup 24 hilos|Speedup 48 hilos|
+|----------------|----------------|
 |0.83            |0.71            |
