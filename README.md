@@ -25,6 +25,6 @@ GPU: NVIDIA GeForce RTX 3070
 
 # Discución
 
-Los speedup obtenidos para 24 hilos y 48 hilos, fueron 6% y 7% respectivamente, no fueron representativamente mejores, pero sí hubo diferencia.
+Los speedup obtenidos para 24 hilos y 48 hilos, fueron 106% y 107% respectivamente, no fueron considerablemente mejores, pero sí hubo diferencia.
 
 Esto quiere decir o según lo que logro analizar: El algoritmo probablemente no se beneficia de una mayor cantidad de hilos. Según lo que entendí sobre **Numba** este tipo de operaciones se ven mejor reflejadas si son realizadas por la **GPU**, en nuestro caso estamos utilizando la **CPU** para ello. Además sería bueno revizar el algoritmo para encontrar en donde está haciendo operaciones de sincronización ya que esto podría desbalancear la carga de éste.
