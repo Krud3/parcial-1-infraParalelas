@@ -14,17 +14,17 @@ GPU: NVIDIA GeForce RTX 3070
 |3                           | 10.34                 | 10.31  🔴                    | 11.42 🔴                    |
 |4                           | 11.43 🔴              | 10.23                        | 09.91                        |
 |5                           | 10.42 🔴              | 09.72                        | 09.65                        |
-|Promedio (eliminando peores)| 1.15                  | 1.39                         | 1.63                         |
+|Promedio (eliminando peores)| 10.59                 | 10.00                        | 9.89                         |
 
 
 # Speedup
 
 |Speedup 24 hilos|Speedup 48 hilos|
 |----------------|----------------|
-|0.83            |0.71            |
+|1.06            |1.07            |
 
 # Discución
 
-Los speedup obtenidos para 24 hilos y 48 hilos, fueron menores a 1. Esto indica que no hubo mejora de rendimiento al paralelizar (en mi caso) el bucle que controlaba el aplicar el filtro.
+Los speedup obtenidos para 24 hilos y 48 hilos, fueron 6% y 7% respectivamente, no fueron representativamente mejores, pero sí hubo diferencia.
 
-Esto quiere decir o según lo que logro analizar: El algoritmo no se beneficia de una mayor cantidad de hilos. Según lo que entendí sobre **Numba** este tipo de operaciones se ven mejor reflejadas si son realizadas por la **GPU**, en nuestro caso estamos utilizando la **CPU** para ello. Además sería bueno revizar el algoritmo para encontrar en donde está haciendo operaciones de sincronización ya que esto podría desbalancear la carga de éste.
+Esto quiere decir o según lo que logro analizar: El algoritmo probablemente no se beneficia de una mayor cantidad de hilos. Según lo que entendí sobre **Numba** este tipo de operaciones se ven mejor reflejadas si son realizadas por la **GPU**, en nuestro caso estamos utilizando la **CPU** para ello. Además sería bueno revizar el algoritmo para encontrar en donde está haciendo operaciones de sincronización ya que esto podría desbalancear la carga de éste.
