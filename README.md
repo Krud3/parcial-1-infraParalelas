@@ -1,3 +1,8 @@
+# Datos de la máquina
+Procesador: AMD Ryzen 9 5900X 12-Core Proceessor (24 CPUs),~3.7GHz
+Memoria RAM: 32768MB
+GPU: NVIDIA GeForce RTX 3070
+
 # Datos recopilados
 
 |N                           | Tiempo Secuencial (s) | Tiempo Paralelo 24 hilos (s) | Tiempo Paralelo 48 hilos (s) |
@@ -9,3 +14,8 @@
 |5                           | 1.19                  | 1.56                         | 1.48                         |
 |Promedio (eliminando peores)| 1.15                  | 1.39                         | 1.63                         |
 
+
+# Speedup
+
+|Speedup 24 hilos|Speedup 48 hilos|
+|0.83            |0.71            |
